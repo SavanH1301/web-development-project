@@ -33,9 +33,19 @@ The project also includes a **custom-built Admin Dashboard** to:
 ## ⚙️ Database Schema  
 This project uses **three main tables**:  
 
-### **`seats`**
-- Stores seat details, booking status, premium flags, and assigned user info.
-  
+## 🗄 Database Setup (MySQL)
+
+This project uses a **MySQL database** named `seat_booking` with three tables:  
+- **`seats`** – Stores seat details, booking status, and assigned user information  
+- **`inquiries`** – Logs user inquiries with their contact details and messages  
+- **`transactions`** – Tracks seat payments, amounts, and transaction dates  
+
+### **SQL Schema**
+```sql
+-- Create Database
+CREATE DATABASE IF NOT EXISTS seat_booking;
+USE growmore_library;
+
 -- Seats Table
 CREATE TABLE seats (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,9 +60,6 @@ CREATE TABLE seats (
     target_exam VARCHAR(100)
 );
 
-### **`inquiries`**
-- Captures user inquiries with their contact information and messages.
-
 -- Inquiries Table
 CREATE TABLE inquiries (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -64,9 +71,6 @@ CREATE TABLE inquiries (
     inquiry_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-### **`transactions`**
-- Tracks payments, seat numbers, and transaction details for each booking.
-
 -- Transactions Table
 CREATE TABLE transactions (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -77,4 +81,5 @@ CREATE TABLE transactions (
     amount DECIMAL(10, 2) NOT NULL,
     library_name VARCHAR(50) NOT NULL
 );
+
 
