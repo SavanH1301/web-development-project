@@ -1,0 +1,2286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard – Seat Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* Base Styles */
+    :root {
+      --primary: #3a0ca3;
+      --primary-dark: #240046;
+      --secondary: #f72585;
+      --accent: #4cc9f0;
+      --premium: #ffd700;
+      --premium-dark: #daa520;
+      --booked: #ef233c;
+      --available: #ffffff;
+      --selected: #90e0ef;
+      --text-dark: #2b2d42;
+      --text-light: #f8f9fa;
+      --bg-gradient: linear-gradient(135deg, #3a0ca3 0%, #4361ee 100%);
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      color: var(--text-dark);
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Header */
+    .admin-header {
+      background: var(--bg-gradient); 
+      color: var(--text-light);
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .admin-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 L0,100 Z" /></svg>');
+      opacity: 0.1;
+    }
+    
+    .admin-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      position: relative;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .admin-header p {
+      font-size: 1.1rem;
+      font-weight: 300;
+      position: relative;
+      opacity: 0.9;
+    }
+    
+    /* Layout containers */
+    .center-buttons {
+      text-align: center;
+      margin: 30px 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    
+    .center-buttons button {
+      margin: 0;
+      padding: 12px 25px;
+      background: var(--primary);
+      color: var(--text-light);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .center-buttons button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0));
+      pointer-events: none;
+    }
+    
+    .center-buttons button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
+    
+    .center-buttons button.active {
+      background: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(247, 37, 133, 0.3);
+    }
+    
+    .admin-seat-layout {
+      padding: 0 5%;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .seat-section {
+      background: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .seat-section:hover {
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+    
+    .seat-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      color: var(--primary-dark);
+      position: relative;
+      display: inline-block;
+    }
+    
+    .seat-section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 50px;
+      height: 4px;
+      background: var(--secondary);
+      border-radius: 2px;
+    }
+    
+    .seat-map {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 15px;
+    }
+    
+    .seat-box {
+      padding: 20px;
+      background: var(--available);
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 1/1;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    
+    .seat-box::before {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      right: 5px;
+      bottom: 5px;
+      border: 1px dashed rgba(0,0,0,0.1);
+      border-radius: 8px;
+      pointer-events: none;
+    }
+    
+    .seat-box .seat-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .seat-box .seat-number {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+    
+    .seat-box.premium {
+      background: linear-gradient(135deg, var(--premium) 0%, var(--premium-dark) 100%);
+      border-color: var(--premium-dark);
+      color: #5a4200;
+    }
+    
+    .seat-box.premium .seat-icon {
+      color: #5a4200;
+    }
+    
+    .seat-box.premium::after {
+      content: '★';
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      color: #5a4200;
+      font-size: 12px;
+    }
+    
+    .seat-box.booked {
+      background: linear-gradient(135deg, var(--booked) 0%, #d00000 100%);
+      border-color: #d00000;
+      color: white;
+      cursor: not-allowed;
+    }
+    
+    .seat-box.booked .seat-icon,
+    .seat-box.booked .seat-number {
+      color: white;
+    }
+    
+    .seat-box.selected {
+      background: var(--selected);
+      border-color: var(--accent);
+      transform: scale(1.05);
+      box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.3);
+    }
+    
+    .seat-box:not(.booked):hover {
+      transform: scale(1.05);
+      background: var(--selected);
+      border-color: var(--accent);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    
+    .seat-box:not(.booked):hover .seat-icon {
+      transform: translateY(-5px);
+    }
+    
+    /* Legend */
+    .seat-legend {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    
+    /* Stats */
+    .seat-stats {
+      display: flex;
+      justify-content: space-around;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin-top: 30px;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-dark);
+      opacity: 0.7;
+    }
+    
+    /* Popup styling */
+    .seat-detail-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .seat-detail-popup.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    .popup-card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      animation: popupIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .popup-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 100%;
+      background: var(--secondary);
+    }
+    
+    @keyframes popupIn {
+      from { transform: scale(0.8) translateY(20px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    
+    .popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .popup-header h3 {
+      font-size: 1.5rem;
+      color: var(--primary-dark);
+      margin: 0;
+    }
+    
+    .popup-header button {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-dark);
+      transition: all 0.2s;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+    
+    .popup-header button:hover {
+      background: #f1f1f1;
+      color: var(--secondary);
+    }
+    
+    .popup-body .popup-field {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      position: relative;
+    }
+    
+    .popup-field label {
+      width: 120px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    
+    .popup-field input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    
+    .popup-field input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.3);
+      outline: none;
+    }
+    
+    .popup-field input:disabled {
+      background: #f8f9fa;
+      color: #6c757d;
+      cursor: not-allowed;
+    }
+    
+    .edit-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .edit-btn:hover {
+      background: #38b6db;
+    }
+    
+    .popup-actions {
+      text-align: right;
+      margin-top: 30px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    
+    .btn-save {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-save:hover {
+      background: #f50057;
+      transform: translateY(-2px);
+    }
+    
+    .btn-cancel {
+      background: #6c757d;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-cancel:hover {
+      background: #5a6268;
+      transform: translateY(-2px);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .seat-map {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .seat-stats {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .center-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .center-buttons button {
+        width: 100%;
+      }
+    }
+    
+    /* Animation */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+  </style>
+</head>
+<body>
+  <header class="admin-header">
+    <h1>Library Seat Management System</h1>
+    <p>Interactive seat booking and administration dashboard</p>
+  </header>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <div class="center-buttons">
+    <button onclick="toggleCenter('rajkot')" class="active" id="rajkotBtn">
+      <i class="fas fa-university"></i> Rajkot Center
+    </button>
+    <button onclick="toggleCenter('morbi')" id="morbiBtn">
+      <i class="fas fa-book-open"></i> Morbi Center
+    </button>
+  </div>
+
+  <main class="admin-seat-layout">
+    <section class="seat-section" id="rajkotSection">
+      <h2>Rajkot Library Seating</h2>
+      <div class="seat-map" id="rajkotSeatMap"></div>
+      
+      <div class="seat-legend">
+        <div class="legend-item">
+          <div class="legend-color" style="background: white; border-color: #e9ecef;"></div>
+          <span>Available</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: var(--booked);"></div>
+          <span>Booked</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: var(--premium);"></div>
+          <span>Premium</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: var(--selected);"></div>
+          <span>Selected</span>
+        </div>
+      </div>
+      
+      <div class="seat-stats">
+        <div class="stat-item">
+          <div class="stat-value" id="rajkotTotal">60</div>
+          <div class="stat-label">Total Seats</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="rajkotAvailable">36</div>
+          <div class="stat-label">Available</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="rajkotBooked">24</div>
+          <div class="stat-label">Booked</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="rajkotPremium">12</div>
+          <div class="stat-label">Premium</div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="seat-section" id="morbiSection" style="display: none;">
+      <h2>Morbi Library Seating</h2>
+      <div class="seat-map" id="morbiSeatMap"></div>
+      
+      <div class="seat-legend">
+        <div class="legend-item">
+          <div class="legend-color" style="background: white; border-color: #e9ecef;"></div>
+          <span>Available</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: var(--booked);"></div>
+          <span>Booked</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: var(--premium);"></div>
+          <span>Premium</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: var(--selected);"></div>
+          <span>Selected</span>
+        </div>
+      </div>
+      
+      <div class="seat-stats">
+        <div class="stat-item">
+          <div class="stat-value" id="morbiTotal">60</div>
+          <div class="stat-label">Total Seats</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="morbiAvailable">30</div>
+          <div class="stat-label">Available</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="morbiBooked">30</div>
+          <div class="stat-label">Booked</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="morbiPremium">15</div>
+          <div class="stat-label">Premium</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="seat-detail-popup" id="seatDetailPopup">
+    <div class="popup-card">
+      <div class="popup-header">
+        <h3>Seat <span id="popupSeatNumber">#1</span> Details</h3>
+        <button onclick="closePopup()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="popup-body">
+        <div class="popup-field">
+          <label>Name:</label>
+          <input id="seatUserName" disabled>
+          <button class="edit-btn" onclick="enableEdit('seatUserName')"><i class="fas fa-pen"></i></button>
+        </div>
+       <div class="popup-field">
+  <label>End Date:</label>
+  <input type="text" id="seatEndDate" disabled>
+  <button class="edit-btn" onclick="enableEdit('seatEndDate')">
+    <i class="fas fa-pen"></i>
+  </button>
+</div>
+        <div class="popup-field">
+          <label>Phone:</label>
+          <input id="seatPhone" disabled>
+          <button class="edit-btn" onclick="enableEdit('seatPhone')"><i class="fas fa-pen"></i></button>
+        </div>
+        <div class="popup-field">
+          <label>Email:</label>
+          <input id="seatEmail" disabled>
+          <button class="edit-btn" onclick="enableEdit('seatEmail')"><i class="fas fa-pen"></i></button>
+        </div>
+        <div class="popup-field">
+          <label>Seat Type:</label>
+          <input id="seatType" disabled>
+          <button class="edit-btn" onclick="enableEdit('seatType')"><i class="fas fa-pen"></i></button>
+        </div>
+        <div class="popup-actions">
+          <button class="btn-save" onclick="saveChanges()"><i class="fas fa-save"></i> Save</button>
+          <button class="btn-cancel" onclick="closePopup()"><i class="fas fa-times"></i> Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+
+let rajkotSeats = [];
+let morbiSeats = [];
+let currentLibrary = 'rajkot';
+
+const rajkotSection = document.getElementById('rajkotSection');
+const morbiSection = document.getElementById('morbiSection');
+const rajkotSeatMap = document.getElementById('rajkotSeatMap');
+const morbiSeatMap = document.getElementById('morbiSeatMap');
+const seatDetailPopup = document.getElementById('seatDetailPopup');
+
+async function initAdminPage(){
+ 
+  await fetchSeats('rajkot', rajkotSeats);
+  await fetchSeats('morbi', morbiSeats);
+  
+  
+  renderSeats('rajkotSeatMap', rajkotSeats);
+  renderSeats('morbiSeatMap', morbiSeats);
+  
+ 
+  updateStats('rajkot');
+  updateStats('morbi');
+}
+
+
+
+async function fetchSeats(library, targetArray) {
+  try {
+    const response = await fetch(`/api/admin/seats/${library}`);
+    const data = await response.json();
+    
+  
+    targetArray.splice(0, targetArray.length, ...data.map(seat => ({
+      id: seat.id,
+      number: seat.number,
+      booked: seat.booked,
+      premium: seat.premium,
+      name: seat.name || '',
+      phone: seat.phone || '',
+      email: seat.email || '',
+      exam: seat.exam || '',
+    
+      endDate: seat.endDate ? seat.endDate.split('T')[0] : '',
+      selected: false
+    })));
+    
+    console.log(`Fetched ${data.length} seats for ${library}`);
+  } catch (error) {
+    console.error(`Error fetching ${library} seats:`, error);
+  }
+}
+
+
+function renderSeats(mapId, seats) {
+  const container = document.getElementById(mapId);
+  container.innerHTML = '';
+  
+  seats.forEach(seat => {
+    const seatEl = document.createElement('div');
+    seatEl.className = 'seat-box';
+    
+   
+    if (seat.premium) seatEl.classList.add('premium');
+    if (seat.booked) seatEl.classList.add('booked');
+    if (seat.selected) seatEl.classList.add('selected');
+    
+    
+    let iconClass = 'fa-chair'; 
+    if (seat.premium) iconClass = 'fa-crown';
+    if (seat.booked) iconClass = 'fa-user-tie';
+    
+    seatEl.innerHTML = `
+      <i class="fas ${iconClass} seat-icon"></i>
+      <span class="seat-number">${seat.number}</span>
+    `;
+    
+   
+    if (seat.booked) {
+      seatEl.addEventListener('click', () => showPopup(seat));
+    } else {
+      seatEl.addEventListener('click', () => {
+      
+        seat.selected = !seat.selected;
+        renderSeats(mapId, seats);
+      });
+    }
+    
+    container.appendChild(seatEl);
+  });
+}
+
+
+async function updateStats(library) {
+  try {
+    const response = await fetch(`/api/admin/stats/${library}`);
+    const stats = await response.json();
+    
+    document.getElementById(`${library}Total`).textContent = stats.total;
+    document.getElementById(`${library}Available`).textContent = stats.available;
+    document.getElementById(`${library}Booked`).textContent = stats.booked;
+    document.getElementById(`${library}Premium`).textContent = stats.premium;
+  } catch (error) {
+    console.error(`Error fetching ${library} stats:`, error);
+  }
+}
+
+
+function toggleCenter(center) {
+  if (center === 'rajkot') {
+    rajkotSection.style.display = 'block';
+    morbiSection.style.display = 'none';
+  } else {
+    rajkotSection.style.display = 'none';
+    morbiSection.style.display = 'block';
+  }
+  
+  document.getElementById('rajkotBtn')?.classList.toggle('active', center === 'rajkot');
+  document.getElementById('morbiBtn')?.classList.toggle('active', center === 'morbi');
+  
+  currentLibrary = center;
+}
+
+
+function showPopup(seat) {
+  seatDetailPopup.classList.add('active');
+  
+  
+  document.getElementById('popupSeatNumber').textContent = '#' + seat.number;
+  document.getElementById('seatUserName').value = seat.name || '';
+  
+
+  document.getElementById('seatEndDate').value = seat.endDate || '';
+  
+  document.getElementById('seatPhone').value = seat.phone || '';
+  document.getElementById('seatEmail').value = seat.email || '';
+  document.getElementById('seatType').value = seat.premium ? 'premium' : 'standard';
+  
+ 
+  window.currentSeat = seat;
+}
+
+
+async function saveChanges() {
+  const seat = window.currentSeat;
+  const formData = {
+    name: document.getElementById('seatUserName').value,
+    endDate: document.getElementById('seatEndDate').value, 
+    phone: document.getElementById('seatPhone').value,
+    email: document.getElementById('seatEmail').value,
+    exam: '', 
+    premium: document.getElementById('seatType').value === 'premium'
+  };
+
+  try {
+    const response = await fetch(`/api/admin/seats/${seat.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+     
+      Object.assign(seat, formData);
+     
+      renderSeats('rajkotSeatMap', rajkotSeats);
+      renderSeats('morbiSeatMap', morbiSeats);
+      
+      closePopup();
+      alert('Seat updated successfully!');
+    } else {
+      alert('Failed to update seat. Please try again.');
+    }
+  } catch (error) {
+    console.error('Error updating seat:', error);
+    alert('An error occurred. Please try again.');
+  }
+}
+
+
+function enableEdit(fieldId) {
+  const input = document.getElementById(fieldId);
+  input.disabled = false;
+  
+ 
+  if (fieldId === 'seatType') {
+    input.innerHTML = `
+      <option value="standard">Standard</option>
+      <option value="premium">Premium</option>
+    `;
+    input.value = window.currentSeat.premium ? 'premium' : 'standard';
+  }
+  
+  input.focus();
+}
+
+
+async function saveChanges() {
+  const seat = window.currentSeat;
+  const formData = {
+    name: document.getElementById('seatUserName').value,
+    endDate: document.getElementById('seatEndDate').value,
+    
+    phone: document.getElementById('seatPhone').value,
+    email: document.getElementById('seatEmail').value,
+    exam: '', 
+    premium: document.getElementById('seatType').value === 'premium'
+  };
+
+  
+  try {
+    const response = await fetch(`/api/admin/seats/${seat.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+    
+      
+      Object.assign(seat, formData);
+      
+    
+      renderSeats('rajkotSeatMap', rajkotSeats);
+      renderSeats('morbiSeatMap', morbiSeats);
+      
+      closePopup();
+      alert('Seat updated successfully!');
+    } else {
+      alert('Failed to update seat. Please try again.');
+    }
+  } catch (error) {
+    console.error('Error updating seat:', error);
+    alert('An error occurred. Please try again.');
+  }
+}
+
+
+function closePopup() {
+  seatDetailPopup.classList.remove('active');
+ 
+  document.querySelectorAll('.popup-field input').forEach(input => {
+    input.disabled = true;
+  });
+  
+
+  const seatTypeInput = document.getElementById('seatType');
+  seatTypeInput.innerHTML = '<option value="standard">Standard</option><option value="premium">Premium</option>';
+}
+
+
+document.addEventListener('DOMContentLoaded', initAdminPage);  
+setInterval(initAdminPage, 60000);
+
+</script>
+ 
+  
+
+                                         <!-- Inquiry Management Section -->
+
+
+  <section class="inquiry-dashboard">
+    <div class="dashboard-header">
+      <h2><i class="fas fa-inbox"></i> Inquiry Management</h2>
+      <div class="controls">
+        <div class="sort-options">
+          <span>Sort by:</span>
+          <select id="sortInquiries">
+            <option value="newest">Newest First</option>
+            <option value="profit">Profit Potential</option>
+            <option value="type">Inquiry Type</option>
+          </select>
+        </div>
+        <div class="s tats">
+          <span class="stat-badge new"><i class="fas fa-bolt"></i> <span id="newCount">0</span> New</span>
+          <span class="stat-badge total"><i class="fas fa-inbox"></i> <span id="totalCount">0</span> Total</span>
+        </div>
+      </div>
+    </div>
+    <div class="inquiry-grid" id="inquiryContainer"></div>
+  </section>
+
+<style>
+
+
+.inquiry-dashboard {
+  background: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 5px 30px rgba(0,0,0,0.08);
+  padding: 25px;
+  margin: 30px 0;
+  overflow: hidden;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.dashboard-header h2 {
+  font-size: 1.8rem;
+  color: #2b2d42;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.controls {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.sort-options {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sort-options select {
+  padding: 8px 15px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  background: white;
+  font-weight: 500;
+}
+
+.stats {
+  display: flex;
+  gap: 15px;
+}
+
+.stat-badge {
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.stat-badge.new {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+.stat-badge.total {
+  background: rgba(13, 110, 253, 0.1);
+  color: #0d6efd;
+}
+
+.inquiry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.inquiry-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.inquiry-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.inquiry-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+}
+
+
+.inquiry-card.daily { border-left-color: #0d6efd; }
+.inquiry-card.monthly { border-left-color: #198754; }
+.inquiry-card.quarterly { border-left-color: #991ca4; }
+.inquiry-card.premium { border-left-color: #ffc107; }
+
+.inquiry-card.daily::before { background: #0d6efd; }
+.inquiry-card.monthly::before { background: #198754; }
+.inquiry-card.quarterly::before { background: #7e08a2; }
+.inquiry-card.premium::before { background: #ffc107; }
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.inquiry-type {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: 50px;
+}
+
+.daily .inquiry-type { background: rgba(13, 110, 253, 0.1); color: #0d6efd; }
+.monthly .inquiry-type { background: rgba(25, 135, 84, 0.1); color: #198754; }
+.quarterly .inquiry-type { background: rgba(111, 66, 193, 0.1); color: #b705bd; }
+.premium .inquiry-type { background: rgba(255, 193, 7, 0.1); color: #d4a017; }
+
+.inquiry-date {
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.card-body {
+  margin-bottom: 15px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.info-row i {
+  width: 20px;
+  color: #6c757d;
+  text-align: center;
+}
+
+.user-message {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dashed #dee2e6;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dashed #dee2e6;
+}
+
+.action-btn {
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-respond {
+  background: #038713;
+  color: white;
+  border: 2px solid black;
+  border-radius: 50px;
+  text-decoration: none;
+}
+
+.btn-respond:hover {
+  background: #0b5ed7;
+  text-decoration: none;
+}
+
+.btn-dismiss {
+  background: none;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+}
+
+.btn-dismiss:hover {
+  background: #dc3545;
+  color: white;
+}
+
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 50px 20px;
+  color: #6c757d;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  opacity: 0.3;
+}
+
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(13, 110, 253, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0); }
+}
+
+.new-inquiry {
+  animation: pulseGlow 1.5s ease-out;
+}
+
+</style>
+<script>
+  const inquiryContainer = document.getElementById('inquiryContainer');
+  const sortSelect = document.getElementById('sortInquiries');
+  const newCountEl = document.getElementById('newCount');
+  const totalCountEl = document.getElementById('totalCount');
+  let inquiries = [];
+
+  // Fetch inquiries from server
+  async function fetchInquiries() {
+    try {
+      const response = await fetch('/api/inquiries');
+      if (!response.ok) throw new Error('Failed to fetch inquiries');
+      inquiries = await response.json();
+      renderInquiries(sortSelect.value);
+    } catch (error) {
+      console.error('Error fetching inquiries:', error);
+      inquiryContainer.innerHTML = `
+        <div class="empty-state error">
+          <i class="fas fa-exclamation-circle"></i>
+          <h3>Failed to Load Inquiries</h3>
+          <p>${error.message}</p>
+        </div>`;
+    }
+  }
+
+  function renderInquiries(sortBy = 'newest') {
+    inquiryContainer.innerHTML = '';
+    const currentDate = new Date();
+
+    // Count inquiries received in last 24 hours
+    const newInquiriesCount = inquiries.filter(i => i.hours_ago < 24).length;
+    newCountEl.textContent = newInquiriesCount;
+    totalCountEl.textContent = inquiries.length;
+
+    if (inquiries.length === 0) {
+      inquiryContainer.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-inbox-open"></i>
+          <h3>No Active Inquiries</h3>
+          <p>All caught up! New inquiries will appear here.</p>
+        </div>`;
+      return;
+    }
+
+    let sortedInquiries = [...inquiries];
+    
+    if (sortBy === 'newest') {
+      sortedInquiries.sort((a, b) => b.date - a.date);
+    } else if (sortBy === 'profit') {
+      const priority = { 
+        'Quarterly Plan': 4, 
+        'Premium Seat': 3, 
+        'Monthly Plan': 2, 
+        'Daily Pass': 1 
+      };
+      sortedInquiries.sort((a, b) => priority[b.type] - priority[a.type] || b.date - a.date);
+    } else if (sortBy === 'type') {
+      sortedInquiries.sort((a, b) => a.type.localeCompare(b.type) || b.date - a.date);
+    }
+
+     sortedInquiries.forEach(inquiry => {
+      const timeAgo = getTimeAgo(inquiry);
+      const isNew = inquiry.hours_ago < 24;
+      
+      // Map plan types to CSS classes
+      const typeClassMap = {
+        'Daily Pass': 'daily',
+        'Monthly Plan': 'monthly',
+        'Premium Seat': 'premium',
+        'Quarterly Plan': 'quarterly'
+      };
+      
+      // Get CSS class based on plan type
+      const typeClass = typeClassMap[inquiry.type] || inquiry.type.toLowerCase().replace(/\s+/g, '-');
+      
+      // Keep original border styling
+      const borderClass = typeClassMap[inquiry.type] ? typeClassMap[inquiry.type] : 'default';
+
+      const card = document.createElement('div');
+      card.className = `inquiry-card ${borderClass} ${isNew ? 'new-inquiry' : ''}`;
+      
+      card.innerHTML = `
+        <div class="card-header">
+          <span class="inquiry-type">${inquiry.type.toUpperCase()}</span>
+          <span class="inquiry-date">${timeAgo}</span>
+        </div>
+        <div class="card-body">
+          <div class="user-info">
+            <div class="info-row"><i class="fas fa-user"></i><span>${inquiry.name}</span></div>
+            <div class="info-row"><i class="fas fa-envelope"></i><span>${inquiry.email}</span></div>
+            <div class="info-row"><i class="fas fa-phone"></i><span>${inquiry.phone}</span></div>
+          </div>
+          <div class="user-message">
+            <strong><i class="fas fa-comment-dots"></i> Message:</strong>
+            <p>${inquiry.message || 'No message provided'}</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="action-btn btn-dismiss" data-id="${inquiry.id}">
+            <i class="fas fa-times"></i> Dismiss
+          </button>
+          <a class="action-btn btn-respond" href="tel:${inquiry.phone}" title="Call Now">
+            <i class="fas fa-phone"></i> Call Now
+          </a>
+          <a class="action-btn btn-respond" href="https://wa.me/91${inquiry.phone}" target="_blank" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i> WhatsApp
+          </a>
+        </div>`;
+
+      inquiryContainer.appendChild(card);
+    });
+
+    // Add event listeners to dismiss buttons
+    document.querySelectorAll('.btn-dismiss').forEach(button => {
+      button.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        dismissInquiry(id);
+      });
+    });
+  }
+
+  // Calculate time ago text
+  function getTimeAgo(inquiry) {
+    if (inquiry.days_ago > 0) return `${inquiry.days_ago} day${inquiry.days_ago > 1 ? 's' : ''} ago`;
+    if (inquiry.hours_ago > 0) return `${inquiry.hours_ago} hour${inquiry.hours_ago > 1 ? 's' : ''} ago`;
+    return 'Just now';
+  }
+
+  // Dismiss an inquiry
+  async function dismissInquiry(id) {
+    try {
+      const response = await fetch(`/api/inquiries/${id}`, { method: 'DELETE' });
+      if (!response.ok) throw new Error('Failed to dismiss inquiry');
+      
+      // Remove from local array and re-render
+      inquiries = inquiries.filter(i => i.id != id);
+      renderInquiries(sortSelect.value);
+    } catch (error) {
+      console.error('Error dismissing inquiry:', error);
+      alert('Failed to dismiss inquiry. Please try again.');
+    }
+  }
+
+  // Event listeners
+  sortSelect.addEventListener('change', e => renderInquiries(e.target.value));
+  
+  // Initial fetch
+  fetchInquiries();
+  
+  // Refresh every 60 seconds
+  setInterval(fetchInquiries, 60000);
+</script>
+
+
+
+
+
+                    <!--///////////////////////// Transaction management /////////////////////////////// -->
+
+
+
+
+    <title>Admin Dashboard - Transaction Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+ 
+<style>
+       
+       :root {
+            --primary: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --gray: #95a5a6;
+            --card-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            --card-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7ec 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header h1 i {
+            background: linear-gradient(135deg, var(--primary), #2980b9);
+            padding: 12px;
+            border-radius: 12px;
+            color: white;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .header-controls {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #2980b9);
+            color: white;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #219653);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #c0392b);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .section-title {
+            font-size: 24px;
+            color: var(--dark);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+        }
+        
+        .section-title i {
+            background: linear-gradient(135deg, var(--primary), #2980b9);
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .expense-form {
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: var(--card-shadow);
+            background: linear-gradient(to bottom, #ffffff, #f9fbfd);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-group label i {
+            color: var(--primary);
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 14px 18px;
+            border: 1px solid #e0e6ed;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: var(--transition);
+            background: #f8fafc;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .transactions-container {
+            margin-top: 40px;
+        }
+        
+        .transaction-card {
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+            border-left: 5px solid transparent;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to right, #ffffff 95%, #f1f8ff 100%);
+        }
+        
+        .transaction-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.03);
+        }
+        
+        .transaction-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .income-card {
+            border-left-color: var(--success);
+        }
+        
+        .expense-card {
+            border-left-color: var(--danger);
+        }
+        
+        .transaction-info {
+            flex: 1;
+        }
+        
+        .transaction-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+        
+        .transaction-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            color: var(--gray);
+            font-size: 15px;
+            margin-top: 12px;
+        }
+        
+        .transaction-detail {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .transaction-amount {
+            font-size: 24px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .income-amount {
+            color: var(--success);
+            text-shadow: 0 2px 4px rgba(39, 174, 96, 0.2);
+        }
+        
+        .expense-amount {
+            color: var(--danger);
+            text-shadow: 0 2px 4px rgba(231, 76, 60, 0.2);
+        }
+        
+        .summary-card {
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: var(--card-shadow);
+            background: linear-gradient(to bottom, #ffffff, #f9fbfd);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        
+        .summary-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .summary-title i {
+            color: var(--primary);
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+        
+        .summary-item {
+            text-align: center;
+            padding: 25px 15px;
+            border-radius: 10px;
+            background: #f8fafc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        
+        .summary-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .summary-item-title {
+            font-size: 17px;
+            color: var(--gray);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .summary-item-value {
+            font-size: 28px;
+            font-weight: 800;
+        }
+        .year-section {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 2px dashed #e0e6ed;
+}
+
+.year-section:last-child {
+    border-bottom: none;
+}
+        
+        .income-summary .summary-item-value {
+            color: var(--success);
+        }
+        
+        .expense-summary .summary-item-value {
+            color: var(--danger);
+        }
+        
+        .net-summary .summary-item-value {
+            color: var(--primary);
+        }
+        
+        .month-separator {
+            background: linear-gradient(135deg, var(--primary), #2980b9);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: 700;
+            margin: 40px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 20px;
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: var(--card-shadow);
+            margin-top: 20px;
+        }
+        
+        .empty-state i {
+            font-size: 60px;
+            margin-bottom: 25px;
+            color: #d5dbdb;
+        }
+        
+        .empty-state h3 {
+            font-size: 26px;
+            margin-bottom: 15px;
+            color: var(--dark);
+            font-weight: 700;
+        }
+        
+        .empty-state p {
+            font-size: 18px;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .transaction-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 24px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .income-icon {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.15), rgba(46, 204, 113, 0.1));
+            color: var(--success);
+        }
+        
+        .expense-icon {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.15), rgba(235, 87, 87, 0.1));
+            color: var(--danger);
+        }
+        
+        .transaction-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .loader {
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+        }
+        
+        .loader .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(52, 152, 219, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.4s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, var(--success), #219653);
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, var(--danger), #c0392b);
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .transaction-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .transaction-amount {
+                margin-top: 20px;
+                align-self: flex-end;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification"></div>
+    
+    <div class="admin-container">
+        <div class="header">
+            <h1>
+                <i class="fas fa-chart-line"></i>
+                Financial Dashboard
+            </h1>
+            <div class="header-controls">
+                <button class="btn btn-primary" id="exportBtn">
+                    <i class="fas fa-download"></i> Export Report
+                </button>
+                <button class="btn btn-success" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> Refresh Data
+                </button>
+            </div>
+        </div>
+        
+        <div class="expense-form">
+            <h2 class="section-title">
+                <i class="fas fa-plus-circle"></i> Add New Expense
+            </h2>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="description"><i class="fas fa-file-alt"></i> Description</label>
+                    <input type="text" id="description" placeholder="Enter expense description">
+                </div>
+                
+                <div class="form-group">
+                    <label for="amount"><i class="fas fa-rupee-sign"></i> Amount (₹)</label>
+                    <input type="number" id="amount" placeholder="Enter amount">
+                </div>
+                
+                <div class="form-group">
+                    <label for="date"><i class="fas fa-calendar-day"></i> Date</label>
+                    <input type="date" id="date">
+                </div>
+                
+                <div class="form-group">
+                    <label for="library"><i class="fas fa-book"></i> Library</label>
+                    <select id="library">
+                        <option value="">Select Library</option>
+                        <option value="Rajkot">Rajkot Center</option>
+                        <option value="Morbi">Morbi Center</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="btn btn-danger" id="addExpenseBtn">
+                <i class="fas fa-plus"></i> Add Expense
+            </button>
+        </div>
+        
+        <div class="transactions-container">
+            <h2 class="section-title">
+                <i class="fas fa-file-invoice-dollar"></i> Transaction History
+            </h2>
+            
+            <div id="transactionsList">
+                <div class="loader">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+            
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-file-invoice"></i>
+                <h3>No Transactions Found</h3>
+                <p>Your transaction history will appear here once you have records</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        const API_URL = 'http://localhost:3000';
+        const TRANSACTIONS_API = `${API_URL}/api/transactions`;
+        const ADD_EXPENSE_API = `${API_URL}/api/expenses`;
+       
+        const transactionsList = document.getElementById('transactionsList');
+        const emptyState = document.getElementById('emptyState');
+        const addExpenseBtn = document.getElementById('addExpenseBtn');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const notification = document.getElementById('notification');
+        
+       
+        function showNotification(message, isSuccess = true) {
+            notification.textContent = message;
+            notification.className = `notification ${isSuccess ? 'success' : 'error'} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+     
+        function formatDate(dateString) {
+            const options = { day: '2-digit', month: 'short', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-IN', options);
+        }
+        
+        
+        function groupTransactionsByMonth(transactions) {
+            const grouped = {};
+            
+         
+            transactions.sort((a, b) => 
+                new Date(b.transaction_date) - new Date(a.transaction_date)
+            );
+            
+            transactions.forEach(transaction => {
+                const date = new Date(transaction.transaction_date);
+                const monthYear = `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
+                
+                if (!grouped[monthYear]) {
+                    grouped[monthYear] = [];
+                }
+                
+                grouped[monthYear].push(transaction);
+            });
+            
+            return grouped;
+        }
+        
+       
+        function calculateMonthlySummary(transactions) {
+            let income = 0;
+            let expenses = 0;
+            
+            transactions.forEach(transaction => {
+                if (transaction.seat_number === 89) {
+                    expenses += parseFloat(transaction.amount);
+                } else {
+                    income += parseFloat(transaction.amount);
+                }
+            });
+            
+            return {
+                income,
+                expenses,
+                net: income - expenses
+            };
+        }
+        
+       
+        function calculateYearlySummary(transactions) {
+            let income = 0;
+            let expenses = 0;
+            
+            transactions.forEach(transaction => {
+                if (transaction.seat_number === 89) {
+                    expenses += parseFloat(transaction.amount);
+                } else {
+                    income += parseFloat(transaction.amount);
+                }
+            });
+            
+            return {
+                income,
+                expenses,
+                net: income - expenses
+            };
+        }
+        
+       
+        function renderTransactionCard(transaction) {
+            const isExpense = transaction.seat_number === 89;
+            const cardClass = isExpense ? 'expense-card' : 'income-card';
+            const amountClass = isExpense ? 'expense-amount' : 'income-amount';
+            const amountSign = isExpense ? '-' : '+';
+            const iconClass = isExpense ? 'expense-icon' : 'income-icon';
+            const icon = isExpense ? 'fas fa-arrow-down' : 'fas fa-arrow-up';
+            
+            return `
+                <div class="transaction-card ${cardClass}">
+                    <div class="transaction-header">
+                        <div class="transaction-icon ${iconClass}">
+                            <i class="${icon}"></i>
+                        </div>
+                        <div class="transaction-info">
+                            <div class="transaction-name">${transaction.student_name}</div>
+                            <div class="transaction-details">
+                                <div class="transaction-detail">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>${formatDate(transaction.transaction_date)}</span>
+                                </div>
+                                <div class="transaction-detail">
+                                    <i class="fas fa-chair"></i>
+                                    <span>Seat: ${transaction.seat_number}</span>
+                                </div>
+                                <div class="transaction-detail">
+                                    <i class="fas fa-book"></i>
+                                    <span>${transaction.library_name}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount ${amountClass}">
+                        ${amountSign}₹${parseFloat(transaction.amount).toFixed(2)}
+                    </div>
+                </div>
+            `;
+        }
+        
+       
+        function renderMonthlySummary(monthYear, summary) {
+            const netClass = summary.net >= 0 ? 'income-summary' : 'expense-summary';
+            
+            return `
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <div class="summary-title">
+                            <i class="fas fa-chart-pie"></i>
+                            ${monthYear} Summary
+                        </div>
+                    </div>
+                    <div class="summary-grid">
+                        <div class="summary-item income-summary">
+                            <div class="summary-item-title">Total Income</div>
+                            <div class="summary-item-value">₹${summary.income.toFixed(2)}</div>
+                        </div>
+                        <div class="summary-item expense-summary">
+                            <div class="summary-item-title">Total Expenses</div>
+                            <div class="summary-item-value">₹${summary.expenses.toFixed(2)}</div>
+                        </div>
+                        <div class="summary-item ${netClass}">
+                            <div class="summary-item-title">Net Income</div>
+                            <div class="summary-item-value">₹${summary.net.toFixed(2)}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+      
+        async function fetchTransactions() {
+            transactionsList.innerHTML = `
+                <div class="loader">
+                    <div class="spinner"></div>
+                </div>
+            `;
+            emptyState.style.display = 'none';
+            
+            try {
+                const response = await fetch(TRANSACTIONS_API);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const transactions = await response.json();
+                
+                if (transactions.length === 0) {
+                    transactionsList.innerHTML = '';
+                    emptyState.style.display = 'block';
+                    return;
+                }
+                
+                renderTransactions(transactions);
+            } catch (error) {
+                console.error('Error fetching transactions:', error);
+                transactionsList.innerHTML = '';
+                showNotification('Failed to load transactions. Please try again.', false);
+            }
+        }
+        
+      
+function renderTransactions(transactions) {
+    transactionsList.innerHTML = '';
+    
+ 
+    if (transactions.length === 0) {
+        emptyState.style.display = 'block';
+        return;
+    }
+    
+ 
+    const groupedByYear = {};
+    transactions.forEach(transaction => {
+        const date = new Date(transaction.transaction_date);
+        const year = date.getFullYear();
+        
+        if (!groupedByYear[year]) {
+            groupedByYear[year] = [];
+        }
+        
+        groupedByYear[year].push(transaction);
+    });
+    
+    
+    const years = Object.keys(groupedByYear).sort((a, b) => b - a);
+    
+  
+    years.forEach(year => {
+        const yearTransactions = groupedByYear[year];
+        
+    
+        const yearlySummary = calculateYearlySummary(yearTransactions);
+        
+      
+        let monthlyContent = '';
+        
+        const grouped = groupTransactionsByMonth(yearTransactions);
+        
+       
+        const sortedMonths = Object.keys(grouped).sort((a, b) => {
+            return new Date(b) - new Date(a);
+        });
+        
+        sortedMonths.forEach(monthYear => {
+            const monthTransactions = grouped[monthYear];
+            
+          
+            monthlyContent += `
+                <div class="month-separator">
+                    <i class="fas fa-calendar-alt"></i>
+                    ${monthYear}
+                </div>
+            `;
+            
+         
+            const monthlySummary = calculateMonthlySummary(monthTransactions);
+            monthlyContent += renderMonthlySummary(monthYear, monthlySummary);
+            
+            
+            monthTransactions.forEach(transaction => {
+                monthlyContent += renderTransactionCard(transaction);
+            });
+        });
+        
+       
+        transactionsList.innerHTML += `
+            <div class="year-section">
+                ${renderYearlySummary(year, yearlySummary)}
+                ${monthlyContent}
+            </div>
+        `;
+    });
+}
+
+
+function renderYearlySummary(year, summary) {
+    const netClass = summary.net >= 0 ? 'income-summary' : 'expense-summary';
+    
+    return `
+        <div class="summary-card">
+            <div class="summary-header">
+                <div class="summary-title">
+                    <i class="fas fa-calendar-star"></i>
+                    ${year} Yearly Summary
+                </div>
+            </div>
+            <div class="summary-grid">
+                <div class="summary-item income-summary">
+                    <div class="summary-item-title">Total Income</div>
+                    <div class="summary-item-value">₹${summary.income.toFixed(2)}</div>
+                </div>
+                <div class="summary-item expense-summary">
+                    <div class="summary-item-title">Total Expenses</div>
+                    <div class="summary-item-value">₹${summary.expenses.toFixed(2)}</div>
+                </div>
+                <div class="summary-item ${netClass}">
+                    <div class="summary-item-title">Net Income</div>
+                    <div class="summary-item-value">₹${summary.net.toFixed(2)}</div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+        
+     
+        async function addExpense() {
+            const description = document.getElementById('description').value.trim();
+            const amount = document.getElementById('amount').value;
+            const date = document.getElementById('date').value;
+            const library = document.getElementById('library').value;
+            
+            if (!description || !amount || !date || !library) {
+                showNotification('Please fill all fields', false);
+                return;
+            }
+            
+            try {
+                const response = await fetch(ADD_EXPENSE_API, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        description,
+                        amount,
+                        date,
+                        library
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+               
+                document.getElementById('description').value = '';
+                document.getElementById('amount').value = '';
+                document.getElementById('date').value = new Date().toISOString().split('T')[0];
+                document.getElementById('library').value = '';
+                
+                showNotification('Expense added successfully!');
+              
+                fetchTransactions();
+            } catch (error) {
+                console.error('Error adding expense:', error);
+                showNotification('Failed to add expense. Please try again.', false);
+            }
+        }
+        
+        
+        document.addEventListener('DOMContentLoaded', () => {
+          
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+            
+           
+            fetchTransactions();
+            
+            addExpenseBtn.addEventListener('click', addExpense);
+            refreshBtn.addEventListener('click', fetchTransactions);
+            
+          
+            exportBtn.addEventListener('click', () => {
+                showNotification('Export feature will be implemented soon');
+            });
+        });
+    </script>
+</body>
+</html>

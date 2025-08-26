@@ -1,0 +1,3331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grow More Library - Premium Study Space</title>
+
+  <style>
+    :root {
+      --primary: #00ffc6;
+      --primary-dark: #00e0b9;
+      --primary-light: #14ffd2;
+      --dark: #1c1c1e;
+      --darker: #121212;
+      --light: #f4f4f4;
+      --white: #ffffff;
+      --danger: #ff0000;
+      --warning: #ffcc00;
+      --success: #4CAF50;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Navigation */
+    nav {
+      background-color: var(--dark);
+      color: var(--white);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    nav .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo i {
+      font-size: 1.5rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-links li a {
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+    }
+
+    .nav-links li a:hover {
+      color: var(--primary);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .nav-links li a.active {
+      background: var(--primary);
+      color: var(--dark);
+    }
+
+    .seat-counter {
+      background: rgba(0,255,198,0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .seat-counter i {
+      color: var(--primary);
+    }
+
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                  url('https://miro.medium.com/v2/resize:fit:1100/format:webp/0*e3rizvmrMesYO2X8.jpg') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: var(--white);
+      position: relative;
+      padding: 0 2rem;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      z-index: 2;
+      animation: fadeInUp 1s ease;
+    }
+
+    .hero h1 {
+      font-size: 3.0rem;
+      margin-bottom: 1.5rem;
+      
+      text-shadow: 5px 5px 5px rgba(202, 152, 13, 0.6);
+      line-height: 1.2;
+    }
+
+    .hero p {
+      font-size: 1.4rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+       text-shadow: 5px 5px 5px rgba(202, 152, 13, 0.6);
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.8rem 1.8rem;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 1rem;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--dark);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid var(--white);
+    }
+
+    .btn-outline:hover {
+      background: var(--white);
+      color: var(--dark);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    /* Wave Divider */
+    .wave {
+      position: relative;
+      top: -4px;
+    }
+
+    .wave svg {
+      display: block;
+      width: 100%;
+      height: 100px;
+    }
+
+    /* Sections Common Styles */
+    .section {
+      
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .section-title {
+      
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: var(--dark);
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title:after {
+      
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    .section-dark {
+      background: var(--dark);
+      color: var(--white);
+    }
+
+    .section-dark .section-title {
+      color: var(--primary);
+    }
+
+    .section-dark .section-title:after {
+      background: var(--primary);
+    }
+
+    
+
+    /* Pricing Section */
+    .pricing-grid {
+  display: flex;
+ flex-direction: row;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .pricing-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+.pricing-card {
+  background: var(--white);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+  position: relative;
+  min-width: 300px; /* Prevent cards from shrinking too much */
+}
+
+.pricing-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+.pricing-card.popular {
+  border: 3px solid var(--primary);
+}
+
+.popular-tag {
+  position: absolute;
+  top: 20px;
+  right: -30px;
+  background: var(--primary);
+  color: var(--dark);
+  padding: 0.3rem 2rem;
+  font-weight: 600;
+  transform: rotate(45deg);
+  font-size: 0.8rem;
+}
+
+.pricing-header {
+  padding: 2rem;
+  background: var(--primary);
+  color: var(--dark);
+  text-align: center;
+}
+
+.pricing-header h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.pricing-header .price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  display: block;
+}
+
+.pricing-header .duration {
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+.pricing-features {
+  padding: 2rem;
+  text-align: left;
+}
+
+.pricing-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pricing-features li {
+  margin-bottom: 1rem;
+  position: relative;
+  padding-left: 1.8rem;
+  font-size: 0.95rem;
+}
+
+.pricing-features li:before {
+  content: '\f00c';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+}
+
+.pricing-footer {
+  padding: 0 2rem 2rem;
+  text-align: center;
+}
+
+   
+
+    /* Contact Form */
+    .contact-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .contact-info {
+      text-align: left;
+    }
+
+    .contact-info h3 {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-details {
+      margin-bottom: 2rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-item i {
+      width: 40px;
+      height: 40px;
+      background: rgba(0,255,198,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .social-link:hover {
+      background: var(--primary);
+      color: var(--dark);
+      transform: translateY(-3px);
+    }
+
+    .contact-form {
+  
+    }
+
+   .contact-form {
+  background: var(--white);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 60%;
+}
+
+.contact-form h3 {
+  font-size: 1.6rem;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  position: relative;
+}
+
+.contact-form h3::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 3px;
+  background-color: #5a67d8;
+  margin-top: 0.4rem;
+  border-radius: 2px;
+}
+
+.contact-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  padding: 0.85rem 1.1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #f7f7f7;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+  border-color: #5a67d8;
+  background-color: #fff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(90, 103, 216, 0.25);
+}
+
+.contact-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.contact-form button {
+  background-color: #5a67d8;
+  color: #fff;
+  padding: 0.85rem 1.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.contact-form button:hover {
+  background-color: #434190;
+  transform: translateY(-2px);
+}
+
+.contact-form button i {
+  margin-left: 0.5rem;
+}
+
+
+    /* Footer */
+    footer {
+      background: var(--darker);
+      color: var(--white);
+      padding: 3rem 2rem 1rem;
+      text-align: center;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto 2rem;
+      text-align: left;
+    }
+
+    .footer-col h3 {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      font-size: 1.2rem;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-links a {
+      color: #aaa;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+      padding-left: 5px;
+    }
+
+    .copyright {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 1.5rem;
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--white);
+      border-radius: 15px;
+      max-width: 500px;
+      width: 90%;
+      padding: 2rem;
+      position: relative;
+      transform: translateY(20px);
+      transition: all 0.3s;
+    }
+
+    .modal.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .modal-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-header h2 {
+      color: var(--primary);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+      .contact-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: var(--dark);
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem 0;
+        gap: 0;
+        clip-path: circle(0px at 90% -10%);
+        transition: all 0.5s ease-out;
+      }
+
+      .nav-links.active {
+        clip-path: circle(1000px at 90% -10%);
+      }
+
+      .nav-links li {
+        width: 100%;
+        text-align: center;
+      }
+
+      .nav-links li a {
+        display: block;
+        padding: 1rem;
+        border-radius: 0;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+
+      .section {
+        padding: 3rem 1rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .booking-options {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .option-group {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .pricing-grid {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!----------------------------------------- Navigation <--------------------->
+
+
+  <nav>
+    <div class="logo">
+      <i class="fas fa-book-open"></i>
+      <span>Grow More</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Home</a></li>
+      <li><a href="#facilities">Facilities</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#booking">Book Seat</a></li>
+      
+      <li><a href="#gallery">Gallery</a></li>
+    
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+ 
+    <div class="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </nav>
+
+
+
+                                             <!-- Hero Section -->
+
+
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।
+मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥ </h1>
+      <p>श्रीमद्भगवद्गीता 2.47 | Srimad Bhagavad Gita 2.47</p>
+      <div class="cta-buttons">
+        <a href="#booking" class="btn btn-primary pulse">Book Your Seat Now</a>
+        <a href="#virtual-tour" class="btn btn-outline">Take Virtual Tour</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wave">
+    <svg viewBox="0 0 1440 320"><path fill="#f4f4f4" fill-opacity="1" d="M0,192L48,213.3C96,235,192,277,288,261.3C384,245,480,171,576,154.7C672,139,768,181,864,186.7C960,192,1056,160,1152,144C1248,128,1344,128,1392,128L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+  </div>
+
+
+                                        <!-- Facilities Section -->
+
+
+<section class="facilities-section" id="facilities">  
+  <div class="facilities-header">
+    <h2 class="section-title">Your <span class="highlight">Success Infrastructure</span></h2>
+    <p class="section-subtitle">We've engineered every detail to eliminate distractions and maximize your study performance</p>
+  </div>
+
+  <div class="facility-tabs">
+    <button class="facility-tab active" data-category="all">All Facilities</button>
+    <button class="facility-tab" data-category="comfort">Comfort</button>
+    <button class="facility-tab" data-category="tech">Technology</button>
+    <button class="facility-tab" data-category="wellness">Wellness</button>
+  </div>
+
+  <div class="facility-grid">
+
+                                   <!-- Facility Card  1-->
+
+    <div class="facility-card" data-category="tech">
+      <div class="card-front">
+        <div class="facility-icon">
+          <i class="fas fa-wifi"></i>
+          <div class="pulse-effect"></div>
+        </div>
+        <h3>5G WiFi <span class="speed-badge">300 Mbps</span></h3>
+        <p>Enterprise-grade connectivity that's 5x faster than average Indian broadband</p>
+      </div>
+      <div class="card-back">
+        <h4>Why This Matters:</h4>
+        <p>No more buffering during online lectures or research. Download 1GB study material in just 27 seconds.</p>
+        <div class="comparison">
+          <span class="comparison-bad">Home WiFi <i class="fas fa-arrow-right"></i> 3.2MB/s</span>
+          <span class="comparison-good">Our WiFi <i class="fas fa-arrow-right"></i> 37.5MB/s</span>
+        </div>
+      </div>
+    </div>
+
+                                        <!-- Facility Card 2-->
+
+    <div class="facility-card" data-category="comfort">
+      <div class="card-front">
+        <div class="facility-icon">
+          <i class="fas fa-chair"></i>
+          <div class="ergo-badge">ERGONOMIC</div>
+        </div>
+        <h3>Study Throne</h3>
+        <p>German-engineered chair with 8-hour comfort guarantee and adjustable lumbar support</p>
+      </div>
+      <div class="card-back">
+        <h4>Science-Backed Design:</h4>
+        <p>Reduces back pain by 62% compared to standard chairs, based on IIT ergonomics study.</p>
+        <div class="feature-list">
+          <span><i class="fas fa-check-circle"></i> 12 adjustable positions</span>
+          <span><i class="fas fa-check-circle"></i> Breathable mesh fabric</span>
+          <span><i class="fas fa-check-circle"></i> 5-year warranty</span>
+        </div>
+      </div>
+    </div>
+
+                                      <!-- Facility Card 3 -->
+
+
+    <div class="facility-card" data-category="wellness">
+      <div class="card-front">
+        <div class="facility-icon">
+          <i class="fas fa-glass-whiskey"></i>
+          <div class="eco-badge">ECO</div>
+        </div>
+        <h3>Hydro Station</h3>
+        <p>RO+UV purified water with mineral infusion for optimal hydration</p>
+      </div>
+      <div class="card-back">
+        <h4>Health Impact:</h4>
+        <p>Proper hydration improves cognitive performance by up to 30% (NIH study).</p>
+        <div class="feature-list">
+          <span><i class="fas fa-check-circle"></i> Hot & cold options</span>
+          <span><i class="fas fa-check-circle"></i> pH balanced</span>
+          <span><i class="fas fa-check-circle"></i> Mineral enriched</span>
+        </div>
+      </div>
+    </div>
+
+                                     <!-- Facility Card 4 -->
+
+    <div class="facility-card" data-category="comfort">
+      <div class="card-front">
+        <div class="facility-icon">
+          <i class="fas fa-utensils"></i>
+          <div class="premium-badge">PREMIUM</div>
+        </div>
+        <h3>Fuel Zone</h3>
+        <p>Microwave, induction plates and meal prep area with premium cleanliness standards</p>
+      </div>
+      <div class="card-back">
+        <h4>Time Savings:</h4>
+        <p>Members save 9.3 hours weekly by not traveling for meals (based on member surveys).</p>
+        <div class="feature-list">
+          <span><i class="fas fa-check-circle"></i> Daily deep cleaning</span>
+          <span><i class="fas fa-check-circle"></i> Free herbal teas</span>
+          <span><i class="fas fa-check-circle"></i> Fridge storage</span>
+        </div>
+      </div>
+    </div>
+
+                                         <!-- Facility Card 5  -->
+
+
+    <div class="facility-card" data-category="comfort">
+      <div class="card-front">
+        <div class="facility-icon">
+          <i class="fas fa-wind"></i>
+          <div class="tech-badge">HVAC</div>
+        </div>
+        <h3>Climate Control</h3>
+        <p>Maintains perfect 22°C ±1° with hospital-grade air purification</p>
+      </div>
+      <div class="card-back">
+        <h4>Productivity Boost:</h4>
+        <p>Ideal temperature increases focus duration by 41% (Harvard study).</p>
+        <div class="feature-list">
+          <span><i class="fas fa-check-circle"></i> PM 2.5 filtration</span>
+          <span><i class="fas fa-check-circle"></i> Oxygen monitoring</span>
+          <span><i class="fas fa-check-circle"></i> Silent operation</span>
+        </div>
+      </div>
+    </div>
+
+                                            <!-- Facility Card 6  -->
+
+
+    <div class="facility-card" data-category="tech">
+      <div class="card-front">
+        <div class="facility-icon">
+          <i class="fas fa-video"></i>
+          <div class="security-badge">24/7</div>
+        </div>
+        <h3>Smart Security</h3>
+        <p>Facial recognition entry and AI-powered surveillance for absolute safety</p>
+      </div>
+      <div class="card-back">
+        <h4>Peace of Mind:</h4>
+        <p>100% incident-free since launch with military-grade security protocols.</p>
+        <div class="feature-list">
+          <span><i class="fas fa-check-circle"></i> Biometric access</span>
+          <span><i class="fas fa-check-circle"></i> Baggage scanners</span>
+          <span><i class="fas fa-check-circle"></i> Emergency buttons</span>
+        </div>
+      </div>
+    </div>
+
+                                     <!-- Facility Card 7 -->
+
+    <div class="facility-card" data-category="wellness">
+      <div class="card-front">
+        <div class="facility-icon">
+          <i class="fas fa-restroom"></i>
+          <div class="hygiene-badge">AAA+</div>
+        </div>
+        <h3>Sanitary Oasis</h3>
+        <p>Japanese-style washrooms cleaned every 90 minutes with touchless fixtures</p>
+      </div>
+      <div class="card-back">
+        <h4>Hygiene Matters:</h4>
+        <p>Our washrooms score 98% in member satisfaction surveys (vs 62% industry average).</p>
+        <div class="feature-list">
+          <span><i class="fas fa-check-circle"></i> Automatic sensors</span>
+          <span><i class="fas fa-check-circle"></i> Premium amenities</span>
+          <span><i class="fas fa-check-circle"></i> Odor control</span>
+        </div>
+      </div>
+    </div>
+
+                                    <!-- Facility Card 8  -->
+
+
+    <div class="facility-card" data-category="comfort">
+      <div class="card-front">
+        <div class="facility-icon">
+          <i class="fas fa-brain"></i>
+          <div class="science-badge">SCIENCE</div>
+        </div>
+        <h3>Focus Ecosystem</h3>
+        <p>Soundproofed zones with optimal lighting (5000K) for maximum concentration</p>
+      </div>
+      <div class="card-back">
+        <h4>Neuroscience Backed:</h4>
+        <p>Our environment increases information retention by 57% compared to cafes (MIT study).</p>
+        <div class="feature-list">
+          <span><i class="fas fa-check-circle"></i> 35dB ambient sound</span>
+          <span><i class="fas fa-check-circle"></i> Circadian lighting</span>
+          <span><i class="fas fa-check-circle"></i> Negative ion generators</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+                                       <!-- Image Gallery Slider Section -->
+
+
+<div class="circular-carousel">
+  <div class="carousel-container">
+    <div class="carousel-track">
+      <div class="carousel-card">
+        <img src="https://i.pinimg.com/736x/f9/f6/5b/f9f65bf158bd4def6bb5810ac0804f3b.jpg" alt="Study Space 1">
+      </div>
+      <div class="carousel-card">
+        <img src="https://static.dezeen.com/uploads/2019/09/british-library-members-study-room-interiors-white-red-architects_dezeen_2364_col_3-852x568.jpg" alt="Study Space 2">
+      </div>
+      <div class="carousel-card">
+        <img src="https://dematosryan-bcmh.imgix.net/wp-content/uploads/2017/01/DMR_British-Library_Visit-2_%C2%A9HuftonCrow_004-1875x1250.jpg" alt="Study Space 3">
+      </div>
+      <div class="carousel-card">
+        <img src="https://thearchitectsdiary.com/wp-content/uploads/2025/03/library-interior-design-16-1024x683.jpg" alt="Study Space 4">
+      </div>
+      <div class="carousel-card">
+        <img src="https://thearchitectsdiary.com/wp-content/uploads/2025/03/library-interior-design-20.jpg" alt="Study Space 5">
+      </div>
+       <div class="carousel-card">
+        <img src="https://jdinstituteoffashiontechnology.b-cdn.net/wp-content/uploads/2021/09/Study-room-interior-design-ideas-THUMBNAIL.jpg" alt="Study Space 6">
+      </div>
+    </div>
+  </div>
+ 
+
+</div>
+
+                                               <!-- Facility Video Tour -->
+
+
+<div class="facility-tour-cta" id="virtual-tour">
+  <div class="tour-content">
+    <h3>Experience Our Space Virtually</h3>
+    <p>Take our 360° interactive tour to see how we've engineered the perfect study environment</p>
+    <button class="tour-button" id="launchTourBtn">
+      <i class="fas fa-vr-cardboard"></i> Launch Virtual Tour
+    </button>
+  </div>
+  <div class="tour-preview">
+    <div class="play-button"><i class="fas fa-play"></i></div>
+  </div>
+</div>
+
+
+<div class="tour-modal" id="tourModal">
+  <div class="video-modal-content">
+    <span class="close-btn" id="closeModalBtn">&times;</span>
+    <div class="video-wrapper">
+      <iframe id="tourVideo" width="100%" height="100%" frameborder="0"
+        allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+
+</section>
+
+<style>
+
+.tour-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+}
+
+
+.video-modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 900px;
+  background: #000;
+  padding: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+}
+
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+}
+
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;  
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+
+
+  .facilities-section {
+    padding: 5rem 2rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9f5ff 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .facilities-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+    opacity: 0.03;
+    z-index: 0;
+  }
+
+  .facilities-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .facilities-header .section-title {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, #1c1c1e 0%, #00ffc6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+  }
+
+  .facilities-header .highlight {
+    color: #00ffc6;
+    -webkit-text-fill-color: #00ffc6;
+  }
+
+  .facilities-header .section-subtitle {
+    font-size: 1.2rem;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  .facility-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  .facility-tab {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    background: rgba(255,255,255,0.7);
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    color: #555;
+  }
+
+  .facility-tab.active {
+    background: #00ffc6;
+    color: #1c1c1e;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,255,198,0.3);
+  }
+
+  .facility-tab:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+
+  .facility-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1300px;
+    margin: 0 auto 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .facility-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    height: 320px;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+
+  .facility-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  }
+
+  .card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.6s;
+  }
+
+  .card-front {
+    background: white;
+    z-index: 2;
+    transform: rotateY(0deg);
+  }
+
+  .card-back {
+    background: linear-gradient(135deg, #1c1c1e 0%, #333 100%);
+    color: white;
+    transform: rotateY(180deg);
+    justify-content: center;
+  }
+
+  .facility-card:hover .card-front {
+    transform: rotateY(180deg);
+  }
+
+  .facility-card:hover .card-back {
+    transform: rotateY(360deg);
+  }
+
+  .facility-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(0,255,198,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    position: relative;
+  }
+
+  .facility-icon i {
+    font-size: 2rem;
+    color: #00ffc6;
+  }
+
+  .pulse-effect {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,255,198,0.2);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    opacity: 0;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(0.8); opacity: 0.7; }
+    70% { transform: scale(1.3); opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  .facility-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #1c1c1e;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .facility-card p {
+    color: #666;
+    text-align: center;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  .card-back h4 {
+    color: #00ffc6;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+
+  .card-back p {
+    color: #ddd;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .feature-list span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #fff;
+  }
+
+  .feature-list i {
+    color: #00ffc6;
+  }
+
+  .speed-badge, .ergo-badge, .eco-badge, 
+  .premium-badge, .tech-badge, .security-badge,
+  .hygiene-badge, .science-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 700;
+    margin-left: 0.5rem;
+  }
+
+  .speed-badge { background: #00a8ff; color: white; }
+  .ergo-badge { background: #9c88ff; color: white; }
+  .eco-badge { background: #4cd137; color: white; }
+  .premium-badge { background: #fbc531; color: #1c1c1e; }
+  .tech-badge { background: #00d2d3; color: white; }
+  .security-badge { background: #e84118; color: white; }
+  .hygiene-badge { background: #00cec9; color: white; }
+  .science-badge { background: #6c5ce7; color: white; }
+
+  .facility-comparison {
+    max-width: 800px;
+    margin: 4rem auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    position: relative;
+    z-index: 1;
+  }
+
+  .facility-comparison h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #1c1c1e;
+    font-size: 1.6rem;
+  }
+
+  .comparison-slider {
+    display: flex;
+    position: relative;
+    height: 300px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .before, .after {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .before {
+    width: 50%;
+    left: 0;
+    background: #f8f9fa;
+  }
+
+  .after {
+    width: 50%;
+    right: 0;
+    background: linear-gradient(135deg, #00ffc6 0%, #00e0b9 100%);
+    color: white;
+  }
+
+  .slider-handle {
+    position: absolute;
+    width: 4px;
+    height: 100%;
+    background: #1c1c1e;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: ew-resize;
+    z-index: 10;
+  }
+
+  .slider-handle::before {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #1c1c1e;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .slider-handle::after {
+    content: "↔";
+    position: absolute;
+    color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1rem;
+  }
+
+  .comparison-slider h4 {
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+  }
+
+  .comparison-slider ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .comparison-slider li {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .before i {
+    color: #e84118;
+  }
+
+  .after i {
+    color: white;
+  }
+
+  .facility-tour-cta {
+    display: flex;
+    max-width: 1000px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #1c1c1e 0%, #333 100%);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 1;
+  }
+
+  .tour-content {
+    flex: 1;
+    padding: 3rem;
+    color: white;
+  }
+
+  .tour-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #00ffc6;
+  }
+
+  .tour-content p {
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    color: #ddd;
+  }
+
+  .tour-button {
+    background: #00ffc6;
+    color: #1c1c1e;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    transition: all 0.3s ease;
+  }
+
+  .tour-button:hover {
+    background: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,255,198,0.3);
+  }
+
+
+
+
+  .tour-preview {
+    flex: 1;
+    background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .play-button {
+    width: 70px;
+    height: 70px;
+    background: rgba(0,255,198,0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .play-button i {
+    color: #1c1c1e;
+    font-size: 1.5rem;
+    margin-left: 5px;
+  }
+
+  .play-button:hover {
+    transform: scale(1.1);
+    background: white;
+  }
+
+ 
+  @media (max-width: 768px) {
+    .facility-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .facility-tour-cta {
+      flex-direction: column;
+    }
+    
+    .tour-preview {
+      min-height: 250px;
+    }
+    
+    .facilities-header .section-title {
+      font-size: 2.2rem;
+    }
+  }
+</style>
+
+
+<style>.circular-carousel {
+  width: 80%;
+  height: 70vh;
+  perspective: 1000px;
+  margin-bottom:50px;
+  margin-left: 150px;
+  position: relative;
+  overflow: hidden;
+  cursor: grab;
+}
+
+.carousel-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.carousel-track {
+  position: relative;
+  width: 100%;
+  height: 90%;
+  transform-style: preserve-3d;
+  animation: rotate 30s infinite linear;
+}
+
+.carousel-card {
+  position: absolute;
+  width: 400px;
+  height: 300px;
+  left: calc(50% - 200px);
+  top: calc(50% - 150px);
+  transform-style: preserve-3d;
+  transition: all 0.5s ease;
+  cursor: pointer;
+  border: 5px solid rgb(245, 213, 3);
+  border-radius: 40%;
+}
+
+.carousel-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+}
+
+.carousel-card:hover img {
+  transform: scale(1.05);
+}
+
+
+.carousel-card:nth-child(1) { transform: rotateY(0deg) translateZ(500px); }
+.carousel-card:nth-child(2) { transform: rotateY(60deg) translateZ(500px); }
+.carousel-card:nth-child(3) { transform: rotateY(120deg) translateZ(500px); }
+.carousel-card:nth-child(4) { transform: rotateY(180deg) translateZ(500px); }
+.carousel-card:nth-child(5) { transform: rotateY(240deg) translateZ(500px); }
+.carousel-card:nth-child(6) { transform: rotateY(300deg) translateZ(500px); }
+
+
+.image-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.9);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 5px;
+}
+
+.close-modal {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@keyframes rotate {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const track = document.querySelector('.carousel-track');
+  const cards = document.querySelectorAll('.carousel-card');
+  const modal = document.querySelector('.image-modal');
+  const modalImg = document.getElementById('enlargedImage');
+  const closeModal = document.querySelector('.close-modal');
+  
+  let isDragging = false;
+  let startX, currentX, angle = 0;
+  let animationId;
+  let autoRotate = true;
+  
+ 
+  function autoRotateCarousel() {
+    if (autoRotate) {
+      angle -= 0.2; 
+      track.style.transform = `rotateY(${angle}deg)`;
+    }
+    animationId = requestAnimationFrame(autoRotateCarousel);
+  }
+  autoRotateCarousel();
+  
+ 
+  track.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.clientX;
+    autoRotate = false;
+    track.style.animation = 'none';
+    track.style.cursor = 'grabbing';
+  });
+  
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    currentX = e.clientX;
+    const deltaX = currentX - startX;
+    angle += deltaX * 0.2; 
+    track.style.transform = `rotateY(${angle}deg)`;
+    startX = currentX;
+  });
+  
+  document.addEventListener('mouseup', () => {
+    if (isDragging) {
+      isDragging = false;
+      setTimeout(() => {
+        autoRotate = true;
+        track.style.animation = 'rotate 30s infinite linear';
+      }, 3000); 
+      track.style.cursor = 'grab';
+    }
+  });
+  
+ 
+  cards.forEach(card => {
+    card.addEventListener('click', function() {
+      if (!isDragging) { 
+        const imgSrc = this.querySelector('img').src;
+        modalImg.src = imgSrc;
+        modal.style.display = 'flex';
+        autoRotate = false;
+        track.style.animationPlayState = 'paused';
+      }
+    });
+  });
+  
+  
+  closeModal.addEventListener('click', () => {
+    modal.style.display = 'none';
+    autoRotate = true;
+    track.style.animationPlayState = 'running';
+  });
+  
+
+  track.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    angle += e.deltaY * 0.1;
+    track.style.transform = `rotateY(${angle}deg)`;
+    autoRotate = false;
+    clearTimeout(window.rotationTimeout);
+    window.rotationTimeout = setTimeout(() => {
+      autoRotate = true;
+    }, 3000);
+  });
+});
+</script>
+
+<script>
+
+  // Facility Tab Filtering
+  document.querySelectorAll('.facility-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      // Update active tab
+      document.querySelectorAll('.facility-tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      
+      const category = this.dataset.category;
+      const facilityCards = document.querySelectorAll('.facility-card');
+      
+      facilityCards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Comparison Slider
+  const slider = document.querySelector('.comparison-slider');
+  const handle = document.querySelector('.slider-handle');
+  const before = document.querySelector('.before');
+  let isDragging = false;
+
+  handle.addEventListener('mousedown', () => {
+    isDragging = true;
+    document.body.style.cursor = 'ew-resize';
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    
+    const sliderRect = slider.getBoundingClientRect();
+    let position = e.clientX - sliderRect.left;
+    
+    // Constrain position within slider
+    position = Math.max(0, Math.min(position, sliderRect.width));
+    
+    const percentage = (position / sliderRect.width) * 100;
+    
+    before.style.width = `${percentage}%`;
+    handle.style.left = `${percentage}%`;
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+    document.body.style.cursor = '';
+  });
+
+  // Animate facility cards on scroll
+  const observ = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.facility-card').forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+     observ.observe(card);
+  });
+
+// ======== JS CODE ========
+document.addEventListener('DOMContentLoaded', () => {
+  const launchBtn = document.getElementById('launchTourBtn');
+  const playBtn = document.querySelector('.play-button'); // play button on right side
+  const modal = document.getElementById('tourModal');
+  const closeBtn = document.getElementById('closeModalBtn');
+  const iframe = document.getElementById('tourVideo');
+
+  const embedUrl = 'https://www.youtube.com/embed/A6urnRc3DFU?autoplay=1&loop=1&playlist=A6urnRc3DFU';
+
+  // Common function to open video modal
+  function openVideoModal() {
+    iframe.src = embedUrl;
+    modal.style.display = 'flex';
+  }
+
+  // Attach event listeners to both buttons
+  launchBtn.addEventListener('click', openVideoModal);
+  playBtn.addEventListener('click', openVideoModal);
+
+  // Close Modal
+  function closeModal() {
+    modal.style.display = 'none';
+    iframe.src = ''; // Stop video playback
+  }
+
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+});
+
+
+
+
+
+</script>
+
+ 
+                                      <!-- Pricing Section -->
+
+  <section class="section" id="pricing">
+    <h2 class="section-title">Choose Your Plan</h2>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-header">
+          <h3>Basic Plan</h3>
+          <div class="price">₹1,500</div>
+          <div class="duration">per month</div>
+        </div>
+        <div class="pricing-features">
+          <ul>
+            <li>Standard seating</li>
+            <li>Access to all facilities</li>
+            <li>5G WiFi</li>
+            <li>12 hours daily access</li>
+            <li>Water & electricity</li>
+          </ul>
+        </div>
+        <div class="pricing-footer">
+          <a href="#booking" class="btn btn-primary">Book Now</a>
+        </div>
+      </div>
+      
+      <div class="pricing-card popular">
+        <div class="popular-tag">Most Popular</div>
+        <div class="pricing-header">
+          <h3>Pro Plan</h3>
+          <div class="price">₹2,700</div>
+          <div class="duration">for 3 months</div>
+        </div>
+        <div class="pricing-features">
+          <ul>
+            <li>Priority seating</li>
+            <li>All Basic Plan features</li>
+            <li>Fixed seat assignment</li>
+            <li>24/7 access</li>
+            <li>Free locker usage</li>
+            <li>Save ₹300</li>
+          </ul>
+        </div>
+        <div class="pricing-footer">
+          <a href="#booking" class="btn btn-primary">Book Now</a>
+        </div>
+      </div>
+      
+      <div class="pricing-card">
+        <div class="pricing-header">
+          <h3>Premium Plan</h3>
+          <div class="price">₹5,100</div>
+          <div class="duration">for 6 months</div>
+        </div>
+        <div class="pricing-features">
+          <ul>
+            <li>Premium window seats</li>
+            <li>All Pro Plan features</li>
+            <li>Personal locker</li>
+            <li>Free printing (50 pages/month)</li>
+            <li>1 free guest pass</li>
+            <li>Save ₹900</li>
+          </ul>
+        </div>
+        <div class="pricing-footer">
+          <a href="#booking" class="btn btn-primary">Book Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+                                   <!--  Seat Booking Section -->
+
+<section class="premium-booking-section" id="booking">
+  <div class="booking-header">
+    <h2 class="section-title">Reserve Your <span class="gradient-text">Productivity Zone</span></h2>
+    <p class="section-subtitle">Select your perfect study throne from our scientifically-designed learning environment</p>
+    
+    <div class="library-selector">
+      <div class="library-tab active" data-location="rajkot">
+        <i class="fas fa-map-marker-alt"></i>
+        Rajkot Center
+      </div>
+      <div class="library-tab" data-location="morbi">
+        <i class="fas fa-map-marker-alt"></i>
+        Morbi Center
+      </div>
+    </div>
+  </div>
+  
+  <div class="booking-container">
+    <div class="seat-visualization">
+      <div class="visualization-header">
+        <h3>Interactive Seat Map <span class="seats-available">54/60 seats available</span></h3>
+        <div class="view-options">
+          <button class="view-btn active" data-view="standard">
+            <i class="fas fa-th"></i> Standard
+          </button>
+          <button class="view-btn" data-view="premium">
+            <i class="fas fa-crown"></i> Premium
+          </button>
+          <button class="view-btn" data-view="3d">
+            <i class="fas fa-cube"></i> 3D View
+          </button>
+        </div>
+      </div>
+      
+      <div class="seat-map-container">
+        <div class="seat-map" id="rajkotSeatMap">
+        </div>
+        <div class="seat-map" id="morbiSeatMap" style="display: none;">
+        </div>
+        
+        <div class="seat-hover-card">
+          <div class="hover-card-content">
+            <h4>Seat <span id="hoverSeatNumber">A12</span></h4>
+            <div class="seat-features">
+              <span><i class="fas fa-plug"></i> Power Outlet</span>
+              <span><i class="fas fa-window-maximize"></i> Window View</span>
+              <span><i class="fas fa-expand"></i> Extra Space</span>
+            </div>
+            <div class="seat-status available">
+              <i class="fas fa-check-circle"></i> Available
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="seat-legend">
+        <div class="legend-item">
+          <div class="legend-color available"></div>
+          <span>Available</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color booked"></div>
+          <span>Booked</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color selected"></div>
+          <span>Selected</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color premium">
+            <i class="fas fa-crown"></i>
+          </div>
+          <span>Premium</span>
+        </div>
+      </div>
+    </div>
+    
+                                            <!-- Booking Form -->
+
+    <div class="booking-form-container">
+      <div class="form-header">
+        <h3>Complete Your Reservation</h3>
+        <div class="progress-steps">
+          <div class="step active">1. Select Seat</div>
+          <div class="step">2. Your Details</div>
+          <div class="step">3. Payment</div>
+        </div>
+      </div>
+      
+      <div class="booking-details">
+        <div class="detail-card">
+          <h4>Selected Seat</h4>
+          <div class="detail-value" id="selectedSeatInfo">
+            <i class="fas fa-chair"></i>
+            <span>Not selected</span>
+          </div>
+        </div>
+        
+        <div class="detail-card">
+          <h4>Duration</h4>
+          <div class="duration-options">
+            <button class="duration-btn" data-months="1">
+              <span class="duration">1 Month</span>
+              <span class="price">₹1200</span>
+              <span class="savings">Standard</span>
+            </button>
+            <button class="duration-btn" data-months="3">
+              <span class="duration">3 Months</span>
+              <span class="price">₹3300</span>
+              <span class="savings">Save ₹300</span>
+            </button>
+            <button class="duration-btn" data-months="6">
+              <span class="duration">6 Months</span>
+              <span class="price">₹6300</span>
+              <span class="savings">Save ₹900</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="detail-card">
+          <h4>Personal Details</h4>
+          <form id="userDetailsForm" class="user-details-form">
+            <div class="form-group">
+              <label for="fullName">Full Name</label>
+              <input type="text" id="fullName" required placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+              <label for="phoneNumber">Phone Number</label>
+              <input type="tel" id="phoneNumber" required placeholder="Enter your WhatsApp number">
+            </div>
+            <div class="form-group">
+              <label for="email">Email (Optional)</label>
+              <input type="email" id="email" placeholder="For receipt and updates">
+            </div>
+            <div class="form-group">
+              <label for="exam">Target Exam</label>
+              <select id="exam" required>
+                <option value="">Select your exam</option>
+                <option>UPSC Civil Services</option>
+                <option>SSC CGL</option>
+                <option>GATE</option>
+                <option>State PSC</option>
+                <option>Other Government Exam</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        
+        <div class="detail-card total-card">
+          <h4>Order Summary</h4>
+          <div class="summary-item">
+            <span>Seat Charge</span>
+            <span id="seatCharge">₹0</span>
+          </div>
+          <div class="summary-item premium-fee" style="display: none;">
+            <span>Premium Upgrade</span>
+            <span id="premiumFee">+₹0</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-item total">
+            <span>Total Amount</span>
+            <span id="totalAmount">₹0</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="payment-options">
+        <h4>Payment Method</h4>
+        <div class="payment-methods">
+          <div class="payment-method active">
+            <input type="radio" name="payment" id="upi" checked>
+            <label for="upi">
+              <i class="fas fa-mobile-alt"></i>
+              <span>UPI Payment</span>
+              <div class="payment-icons">
+                <img src="https://www.shutterstock.com/image-vector/kerala-india-may-08-2023-260nw-2304421791.jpg" alt="GPay">
+                
+              </div>
+            </label>
+          </div>
+          <div class="payment-method">
+            <input type="radio" name="payment" id="card">
+            <label for="card">
+              <i class="far fa-credit-card"></i>
+              <span>Credit/Debit Card</span>
+            </label>
+          </div>
+          <div class="payment-method">
+            <input type="radio" name="payment" id="netbanking">
+            <label for="netbanking">
+              <i class="fas fa-university"></i>
+              <span>Net Banking</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-footer">
+        <button class="btn-secondary" id="adminLoginBtn">
+          <i class="fas fa-lock"></i> Admin Access
+        </button>
+        <button class="btn-primary" id="confirmBookingBtn" disabled>
+          Proceed to Payment <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+                             <!-- Seat Features Section -->
+                              
+  <div class="premium-features">
+    <h3>Why Our Seats Are <span class="highlight">Engineered For Success</span></h3>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon ergonomic">
+          <i class="fas fa-spa"></i>
+        </div>
+        <h4>Ergonomic Design</h4>
+        <p>NASA-inspired seating reduces fatigue by 62% during long study sessions</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon focus">
+          <i class="fas fa-brain"></i>
+        </div>
+        <h4>Focus Zone</h4>
+        <p>Sound-optimized cubicles increase concentration by 3.2× compared to cafes</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon tech">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <h4>Tech Ready</h4>
+        <p>Dedicated 5G WiFi with 300Mbps speed and uninterrupted power supply</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon community">
+          <i class="fas fa-users"></i>
+        </div>
+        <h4>Study Community</h4>
+        <p>Join our network of 850+ serious aspirants preparing for top exams</p>
+      </div>
+    </div>
+  </div>
+  
+                                     <!-- Admin Modal  -->
+
+  <div class="admin-modal" id="adminModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Admin Authentication</h3>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="admin-form">
+          <div class="form-group">
+            <label for="adminPassword">Enter Admin Password</label>
+            <input type="password" id="adminPassword" placeholder="Secure access only">
+          </div>
+          <button class="btn-primary" id="adminLoginSubmit">
+            Access Admin Dashboard <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            
+                                   <!-- CSS for Seat Booking Section  -->
+
+<style>
+                       
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f7f9fb;
+  color: #1c1c1e;
+}
+
+section.premium-booking-section {
+  
+  padding: 60px 20px;
+  background: linear-gradient(to right, #f8fcff, #eef5ff);
+}
+
+.section-title {
+  font-size: 2.5rem;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #0061ff, #60efff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+.library-selector {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.library-tab {
+  padding: 10px 20px;
+  border: 2px solid #007bff;
+  border-radius: 30px;
+  cursor: pointer;
+  color: #007bff;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.library-tab.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.booking-container {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 40px;
+}
+
+
+.seat-visualization {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
+.visualization-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.visualization-header h3 {
+  font-size: 1.2rem;
+}
+
+.seats-available {
+  font-size: 0.9rem;
+  color: #28a745;
+}
+
+.view-options {
+  display: flex;
+  gap: 10px;
+}
+
+.view-btn {
+  background: #e8f0fe;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #007bff;
+  transition: 0.3s;
+}
+
+.view-btn.active, .view-btn:hover {
+  background: #007bff;
+  color: #fff;
+}
+
+
+                                                 /* Booking Form */
+
+
+.booking-form-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
+.progress-steps {
+  display: flex;
+  gap: 10px;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.step {
+  background: #e8f0fe;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.step.active {
+  background: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.detail-card {
+  margin-bottom: 20px;
+}
+
+.detail-value {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.duration-options {
+  display: flex;
+  gap: 10px;
+}
+
+.duration-btn {
+  background: #f0f4ff;
+  border: 2px solid transparent;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  flex: 1;
+}
+
+.duration-btn:hover, .duration-btn.active {
+  border-color: #007bff;
+  background: #e8f0fe;
+}
+
+.user-details-form .form-group {
+  margin-bottom: 15px;
+}
+
+.user-details-form label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.user-details-form input, .user-details-form select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.total-card {
+  background: #f9fafc;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+
+.summary-item.total {
+  font-weight: bold;
+}
+.payment-icons img {
+  width: 100%;
+  height: auto;
+  /* border: solid rgb(182, 162, 201) 5px; */
+  border-radius: 10%;
+  
+  object-fit: contain;
+}
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.payment-method input {
+  margin-right: 10px;
+}
+
+.payment-method.active {
+  background: #e8f0fe;
+}
+
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-primary:disabled {
+  background: #b0c7ff;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: #e8f0fe;
+  color: #007bff;
+}
+
+/* Features Section */
+.premium-features {
+  margin-top: 60px;
+  text-align: center;
+}
+
+.premium-features h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.feature-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #007bff;
+}
+
+                                                  /* Admin Modal */
+.admin-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none; 
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+
+@media (max-width: 576px) {
+
+.booking-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+
+.seat-map-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+
+#rajkotSeatMap,
+#morbiSeatMap {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+
+.seat-hover-card {
+  display: none !important;
+}
+
+
+.view-options {
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+
+.duration-options {
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.progress-steps {
+  flex-direction: column;
+}
+
+.payment-methods {
+  flex-direction: column;
+}
+
+  .form-footer {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Seat Map */
+
+#rajkotSeatMap,
+#morbiSeatMap {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-top: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.seat {
+
+    padding: 20px;
+    background: var(--available);
+    border: 2px solid #adb2b5;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    /* box-shadow: 0 4px 8px rgba(3, 213, 90, 0.912); */
+
+}
+
+
+.seat.selected {
+  border: 3px solid #3498db;
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+  transform: scale(1.1);
+  z-index: 10;
+}
+
+
+.seat.premium {
+  border: 2px solid #f1c40f;
+}
+
+
+.seat i {
+  display: flex;
+  flex-direction: column;
+  margin-right: 3px;
+  font-size: 21px;
+}
+
+
+.seat.booked {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.legend-item .booked {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.legend-item .premium {
+  background-color: gold;
+  color: #333;
+  border: 1px solid #f1c40f;
+}
+
+.legend-item .available {
+  background-color: white;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.seat-map-container {
+  position: relative;
+  min-height: 300px;
+  background: #f0f4ff;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.seat-hover-card {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #fff;
+  padding: 20px;
+   /* border: 2px solid #adb2b5; */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgb(123, 4, 243);
+  display: none; 
+  z-index: 10;
+  max-width: 250px;
+}
+
+.seat-features span {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.seat-status {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.seat-status.available {
+  color: #28a745;
+}
+
+
+.seat-legend {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.legend-color.available {
+  background-color: #5d615e;
+}
+
+.legend-color.booked {
+  background-color: #dc3545;
+}
+
+.legend-color.selected {
+  background-color: #12dc00;
+}
+
+.legend-color.premium {
+  color: #d4af37;
+}
+
+
+.booking-form-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
+.progress-steps {
+  display: flex;
+  gap: 10px;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.step {
+  background: #e8f0fe;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.step.active {
+  background: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.detail-card {
+  margin-bottom: 20px;
+}
+
+.detail-value {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.duration-options {
+  display: flex;
+  gap: 10px;
+}
+
+.duration-btn {
+  background: #f0f4ff;
+  border: 2px solid transparent;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  flex: 1;
+}
+
+.duration-btn:hover, .duration-btn.active {
+  border-color: #007bff;
+  background: #e8f0fe;
+}
+
+.user-details-form .form-group {
+  margin-bottom: 15px;
+}
+
+.user-details-form label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.user-details-form input, .user-details-form select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.total-card {
+  background: #f9fafc;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+
+.summary-item.total {
+  font-weight: bold;
+}
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.payment-method input {
+  margin-right: 10px;
+}
+
+.payment-method.active {
+  background: #e8f0fe;
+}
+
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-primary:disabled {
+  background: #b0c7ff;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: #e8f0fe;
+  color: #007bff;
+}
+
+
+.premium-features {
+  margin-top: 60px;
+  text-align: center;
+}
+
+.premium-features h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.feature-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #007bff;
+}
+@media (max-width: 576px) {
+  .form-footer {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+  #rajkotSeatMap,
+#morbiSeatMap {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 20px;
+}
+}
+
+
+.admin-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none; 
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+} 
+
+
+  </style>
+
+                                        <!-- seat booking script  -->
+
+
+  <script>
+    
+const rajkotSeatMap = document.getElementById("rajkotSeatMap");
+const morbiSeatMap = document.getElementById("morbiSeatMap");
+const seatChargeEl = document.getElementById("seatCharge");
+const premiumFeeEl = document.getElementById("premiumFee");
+const totalAmountEl = document.getElementById("totalAmount");
+const confirmBookingBtn = document.getElementById("confirmBookingBtn");
+const durationButtons = document.querySelectorAll(".duration-btn");
+const selectedSeatInfo = document.getElementById("selectedSeatInfo");
+const adminModal = document.getElementById("adminModal");
+const adminLoginBtn = document.getElementById("adminLoginBtn");
+const closeModal = document.querySelector(".close-modal");
+const adminLoginSubmit = document.getElementById("adminLoginSubmit");
+const adminPasswordInput = document.getElementById("adminPassword");
+const viewButtons = document.querySelectorAll(".view-btn");
+const libraryTabs = document.querySelectorAll(".library-tab");
+
+let selectedSeat = null;
+let selectedDuration = null;
+let isPremium = false;
+let currentLibrary = "rajkot";
+const adminPassword = "7864";
+
+const seatPricing = {
+  base: 1000,
+  premiumFee: 100
+};
+
+const discounts = {
+  1: 0,
+  3: 300,
+  6: 900
+};
+
+
+async function fetchAndRenderSeats(library) {
+  const libraryName = library.charAt(0).toUpperCase() + library.slice(1);
+  const response = await fetch(`/api/seats/${libraryName}`);
+  const seats = await response.json();
+  
+  const container = library === "rajkot" ? rajkotSeatMap : morbiSeatMap;
+  container.innerHTML = "";
+  
+   seats.forEach(seat => {
+    const seatEl = document.createElement("div");
+    seatEl.classList.add("seat");
+    seatEl.dataset.seatId = seat.id;
+    seatEl.dataset.seatNumber = seat.number;
+    
+   
+    if (seat.isBooked) {
+     
+      seatEl.classList.add("booked");
+      seatEl.innerHTML = `<i class="fas fa-user-tie"></i> ${seat.number}`;
+      seatEl.style.backgroundColor = "#ff0000"; 
+      seatEl.style.color = "white";
+    } else if (seat.isPremium) {
+      
+      seatEl.classList.add("premium");
+      seatEl.innerHTML = `<i class="fas fa-crown"></i> ${seat.number}`;
+      seatEl.style.backgroundColor = "gold";
+      seatEl.style.color = "#333";
+    } else {
+    
+      seatEl.innerHTML = `<i class="fas fa-chair"></i> ${seat.number}`;
+      seatEl.style.backgroundColor = "white";
+      seatEl.style.color = "#333";
+    }
+
+   
+    seatEl.style.transition = "all 0.3s ease";
+    seatEl.addEventListener("mouseover", () => {
+      seatEl.style.transform = "scale(1.1)";
+      seatEl.style.boxShadow = "0 5px 15px rgba(0,0,0,0.1)";
+    });
+    seatEl.addEventListener("mouseout", () => {
+      seatEl.style.transform = "scale(1)";
+      seatEl.style.boxShadow = "none";
+    });
+
+   
+    if (!seat.isBooked) {
+      seatEl.addEventListener("click", () => {
+        document.querySelectorAll(".seat").forEach(s => s.classList.remove("selected"));
+        seatEl.classList.add("selected");
+        selectedSeat = seat.id;
+        isPremium = seat.isPremium;
+        updateSummary();
+      });
+    }
+
+    container.appendChild(seatEl);
+  });
+}
+
+
+
+fetchAndRenderSeats("rajkot");
+
+
+libraryTabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    libraryTabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    
+    currentLibrary = tab.dataset.location;
+    
+    if (currentLibrary === "rajkot") {
+      rajkotSeatMap.style.display = "grid";
+      morbiSeatMap.style.display = "none";
+      fetchAndRenderSeats("rajkot");
+    } else {
+      rajkotSeatMap.style.display = "none";
+      morbiSeatMap.style.display = "grid";
+      fetchAndRenderSeats("morbi");
+    }
+    
+    selectedSeat = null;
+    document.querySelectorAll(".seat").forEach(s => s.classList.remove("selected"));
+    updateSummary();
+  });
+});
+
+
+durationButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    durationButtons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    selectedDuration = parseInt(btn.dataset.months);
+    updateSummary();
+  });
+});
+
+
+
+
+function updateSummary() {
+  if (!selectedSeat || !selectedDuration) {
+    confirmBookingBtn.disabled = true;
+    return;
+  }
+
+  const baseTotal = seatPricing.base * selectedDuration;
+  const discount = discounts[selectedDuration] || 0;
+  const premium = isPremium ? seatPricing.premiumFee * selectedDuration : 0;
+  const total = baseTotal + premium - discount;
+
+  selectedSeatInfo.innerHTML = `<i class='fas fa-chair'></i>  <span>Seat ${selectedSeat}</span>`;
+  seatChargeEl.textContent = `₹${baseTotal - discount}`;
+  premiumFeeEl.textContent = `+₹${premium}`;
+  premiumFeeEl.parentElement.style.display = isPremium ? "flex" : "none";
+  totalAmountEl.textContent = `₹${total}`;
+
+  confirmBookingBtn.disabled = false;
+}
+
+                            // ========== Confirm Booking ==========
+
+
+confirmBookingBtn.addEventListener("click", async () => {
+  const fullName = document.getElementById("fullName").value;
+  const phoneNumber = document.getElementById("phoneNumber").value;
+  const email = document.getElementById("email").value;
+  const exam = document.getElementById("exam").value;
+  
+  if (!fullName || !phoneNumber || !exam) {
+    
+    alert("Please fill all required fields");
+    return;
+  }
+  
+ 
+  const adminPassword = prompt("Enter payment verification code (admin password):");
+  if (!adminPassword) {
+    alert("Payment verification required to complete booking");
+    return;
+  }
+
+  const userDetails = { fullName, phoneNumber, email, exam };
+  
+  try {
+    const response = await fetch("/api/book", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        seatId: selectedSeat,
+        library: currentLibrary,
+        duration: selectedDuration,
+        userDetails,
+        adminPassword 
+      })
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      alert(`🎉 Booking confirmed for Seat ${selectedSeat}!`);
+      fetchAndRenderSeats(currentLibrary);
+      resetForm();
+    } else {
+      alert(`❌ Booking failed: ${result.message || "Please try again"}`);
+    }
+  } catch (error) {
+    console.error("Booking error:", error);
+    alert("An error occurred. Please try again.");
+  }
+});
+
+
+function resetForm() {
+  selectedSeat = null;
+  selectedDuration = null;
+  document.querySelectorAll(".seat").forEach(s => s.classList.remove("selected"));
+  durationButtons.forEach(b => b.classList.remove("active"));
+  document.getElementById("userDetailsForm").reset();
+  updateSummary();
+}
+
+                  // ========== Admin Modal Handling ==========
+
+adminLoginBtn.addEventListener("click", () => {
+  adminModal.style.display = "flex";
+});
+
+closeModal.addEventListener("click", () => {
+  adminModal.style.display = "none";
+});
+
+adminLoginSubmit.addEventListener("click", () => {
+  const password = adminPasswordInput.value;
+  if (password === adminPassword) {
+    alert("🧠 Admin access granted. Welcome, Commander.");
+    window.location.href = "admin.html";
+  } else {
+    alert("❌ Incorrect password. Try again, soldier.");
+  }
+});
+
+
+viewButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    viewButtons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const mode = btn.dataset.view;
+
+    const allSeats = document.querySelectorAll(".seat");
+
+    if (mode === "3d") {
+      allSeats.forEach(seat => {
+        seat.style.transform = "rotateX(10deg) rotateY(10deg)";
+        seat.style.boxShadow = "2px 2px 5px rgba(0,0,0,0.5)";
+      });
+    } else if (mode === "premium") {
+      allSeats.forEach(seat => {
+        if (!seat.classList.contains("premium")) {
+          seat.style.opacity = "0.2";
+        } else {
+          seat.style.opacity = "1";
+          seat.style.border = "2px solid gold";
+        }
+      });
+    } else {
+      allSeats.forEach(seat => {
+        seat.style.transform = "none";
+        seat.style.boxShadow = "none";
+        seat.style.opacity = "1";
+        seat.style.border = "1px solid #ccc";
+      });
+    }
+  });
+});
+
+  </script>
+
+                                     <!-- Contact Section -->
+
+<section class="section dark-section" id="contact">
+  <h2 class="section-title">Ready to Transform Your Preparation?</h2>
+  
+  <div class="contact-container">
+    <div class="contact-info">
+      <h3>Visit Us</h3>
+      <p><i class="fas fa-map-marker-alt"></i> Rajkot Branch: 123 Study Lane, Academic Road</p>
+      <p><i class="fas fa-map-marker-alt"></i> Morbi Branch: 456 Knowledge Circle, Education Zone</p>
+      <p><i class="fas fa-phone"></i> +91 9876543210</p>
+      <p><i class="fas fa-envelope"></i> study@GrowMore.com</p>
+      
+      <div class="social-links">
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+      </div>
+    </div>
+    
+   <div class="contact-form">
+  <h3>-</h3>
+  <form id="enquiryForm">
+    <input type="text" name="name" placeholder="Your Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="tel" name="phone_number" placeholder="Phone Number" required>
+
+    <select name="interested_in" required>
+      <option value="">Interested in...</option>
+      <option>Daily Pass</option>
+      <option>Monthly Plan</option>
+      <option>Quarterly Plan</option>
+      <option>Premium Seat</option>
+    </select>
+
+    <textarea name="message" placeholder="Your Message"></textarea>
+    <button type="submit">Send Enquiry <i class="fas fa-paper-plane"></i></button>
+  </form>
+</div>
+
+  </div>
+</section>
+
+                                     <!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-logo">Grow More</div>
+    <div class="footer-links">
+      <a href="#">Terms of Service</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Careers</a>
+      <a href="#">Blog</a>
+    </div>
+    <div class="footer-credits">
+      © 2025 Grow More. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+
+
+  <script>
+
+  
+
+  document.getElementById('enquiryForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value.trim();  
+    });
+
+    console.log('Form data being sent:', data);  
+
+    try {
+      const response = await fetch('http://localhost:3000/submit-inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+      alert(result.message);
+      this.reset();
+    } catch (error) {
+      console.error('❌ Error:', error);
+      alert('❌ Submission failed. Please try again later.');
+    }
+  });
+  </script>
+
+
+
+ 
+
+
+</body>
